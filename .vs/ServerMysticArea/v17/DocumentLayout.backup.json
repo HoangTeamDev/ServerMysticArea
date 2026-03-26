@@ -1,0 +1,244 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Server\\ServerMysticArea\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|d:\\server\\servermysticarea\\servermysticarea\\db\\playerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|solutionrelative:servermysticarea\\db\\playerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|d:\\server\\servermysticarea\\servermysticarea\\gameserver\\gamesender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|solutionrelative:servermysticarea\\gameserver\\gamesender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|d:\\server\\servermysticarea\\servermysticarea\\player\\playerdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|solutionrelative:servermysticarea\\player\\playerdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|d:\\server\\servermysticarea\\servermysticarea\\gameserver\\gamerouter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|solutionrelative:servermysticarea\\gameserver\\gamerouter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|d:\\server\\servermysticarea\\servermysticarea\\db\\accountrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|solutionrelative:servermysticarea\\db\\accountrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|d:\\server\\servermysticarea\\servermysticarea\\gameserver\\sessionmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|solutionrelative:servermysticarea\\gameserver\\sessionmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|d:\\server\\servermysticarea\\servermysticarea\\gameserver\\mainserver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|solutionrelative:servermysticarea\\gameserver\\mainserver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|d:\\server\\servermysticarea\\servermysticarea\\gameserver\\playersession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|solutionrelative:servermysticarea\\gameserver\\playersession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|d:\\server\\servermysticarea\\servermysticarea\\db\\mysqldb.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|solutionrelative:servermysticarea\\db\\mysqldb.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|d:\\server\\servermysticarea\\servermysticarea\\player\\accountdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|solutionrelative:servermysticarea\\player\\accountdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|d:\\server\\servermysticarea\\servermysticarea\\gameserver\\datawriter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|solutionrelative:servermysticarea\\gameserver\\datawriter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|d:\\server\\servermysticarea\\servermysticarea\\gameserver\\datareader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|solutionrelative:servermysticarea\\gameserver\\datareader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|d:\\server\\servermysticarea\\servermysticarea\\gameserver\\message.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59064575-2C44-4994-AF84-181FDED3FEF5}|ServerMysticArea\\ServerMysticArea.csproj|solutionrelative:servermysticarea\\gameserver\\message.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MainServer.cs",
+              "DocumentMoniker": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\GameServer\\MainServer.cs",
+              "RelativeDocumentMoniker": "ServerMysticArea\\GameServer\\MainServer.cs",
+              "ToolTip": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\GameServer\\MainServer.cs",
+              "RelativeToolTip": "ServerMysticArea\\GameServer\\MainServer.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAxwBMAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T12:20:49.853Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GameRouter.cs",
+              "DocumentMoniker": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\GameServer\\GameRouter.cs",
+              "RelativeDocumentMoniker": "ServerMysticArea\\GameServer\\GameRouter.cs",
+              "ToolTip": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\GameServer\\GameRouter.cs",
+              "RelativeToolTip": "ServerMysticArea\\GameServer\\GameRouter.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAUwDEAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T12:49:33.8Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GameSender.cs",
+              "DocumentMoniker": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\GameServer\\GameSender.cs",
+              "RelativeDocumentMoniker": "ServerMysticArea\\GameServer\\GameSender.cs",
+              "ToolTip": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\GameServer\\GameSender.cs",
+              "RelativeToolTip": "ServerMysticArea\\GameServer\\GameSender.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAABMAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T13:12:02.921Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AccountRepository.cs",
+              "DocumentMoniker": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\DB\\AccountRepository.cs",
+              "RelativeDocumentMoniker": "ServerMysticArea\\DB\\AccountRepository.cs",
+              "ToolTip": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\DB\\AccountRepository.cs",
+              "RelativeToolTip": "ServerMysticArea\\DB\\AccountRepository.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAADwvyIAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T13:54:36.783Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PlayerRepository.cs",
+              "DocumentMoniker": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\DB\\PlayerRepository.cs",
+              "RelativeDocumentMoniker": "ServerMysticArea\\DB\\PlayerRepository.cs",
+              "ToolTip": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\DB\\PlayerRepository.cs",
+              "RelativeToolTip": "ServerMysticArea\\DB\\PlayerRepository.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAiwBkAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T13:53:58.091Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AccountData.cs",
+              "DocumentMoniker": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\Player\\AccountData.cs",
+              "RelativeDocumentMoniker": "ServerMysticArea\\Player\\AccountData.cs",
+              "ToolTip": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\Player\\AccountData.cs",
+              "RelativeToolTip": "ServerMysticArea\\Player\\AccountData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAgAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T13:51:25.014Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PlayerData.cs",
+              "DocumentMoniker": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\Player\\PlayerData.cs",
+              "RelativeDocumentMoniker": "ServerMysticArea\\Player\\PlayerData.cs",
+              "ToolTip": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\Player\\PlayerData.cs",
+              "RelativeToolTip": "ServerMysticArea\\Player\\PlayerData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAgAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T13:49:31.97Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "MySqlDb.cs",
+              "DocumentMoniker": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\DB\\MySqlDb.cs",
+              "RelativeDocumentMoniker": "ServerMysticArea\\DB\\MySqlDb.cs",
+              "ToolTip": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\DB\\MySqlDb.cs",
+              "RelativeToolTip": "ServerMysticArea\\DB\\MySqlDb.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T13:42:30.838Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "DataWriter.cs",
+              "DocumentMoniker": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\GameServer\\DataWriter.cs",
+              "RelativeDocumentMoniker": "ServerMysticArea\\GameServer\\DataWriter.cs",
+              "ToolTip": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\GameServer\\DataWriter.cs",
+              "RelativeToolTip": "ServerMysticArea\\GameServer\\DataWriter.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAkwDUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T12:37:03.397Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "DataReader.cs",
+              "DocumentMoniker": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\GameServer\\DataReader.cs",
+              "RelativeDocumentMoniker": "ServerMysticArea\\GameServer\\DataReader.cs",
+              "ToolTip": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\GameServer\\DataReader.cs",
+              "RelativeToolTip": "ServerMysticArea\\GameServer\\DataReader.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAYwC0AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T12:36:47.31Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Message.cs",
+              "DocumentMoniker": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\GameServer\\Message.cs",
+              "RelativeDocumentMoniker": "ServerMysticArea\\GameServer\\Message.cs",
+              "ToolTip": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\GameServer\\Message.cs",
+              "RelativeToolTip": "ServerMysticArea\\GameServer\\Message.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADAAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T12:35:59.424Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PlayerSession.cs",
+              "DocumentMoniker": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\GameServer\\PlayerSession.cs",
+              "RelativeDocumentMoniker": "ServerMysticArea\\GameServer\\PlayerSession.cs",
+              "ToolTip": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\GameServer\\PlayerSession.cs",
+              "RelativeToolTip": "ServerMysticArea\\GameServer\\PlayerSession.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAwwBgAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T12:33:52.464Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SessionManager.cs",
+              "DocumentMoniker": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\GameServer\\SessionManager.cs",
+              "RelativeDocumentMoniker": "ServerMysticArea\\GameServer\\SessionManager.cs",
+              "ToolTip": "D:\\Server\\ServerMysticArea\\ServerMysticArea\\GameServer\\SessionManager.cs",
+              "RelativeToolTip": "ServerMysticArea\\GameServer\\SessionManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwCQAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T12:30:27.932Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
