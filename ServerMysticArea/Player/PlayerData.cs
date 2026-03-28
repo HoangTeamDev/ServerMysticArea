@@ -16,7 +16,9 @@ namespace ServerMysticArea.Player
         public long Exp;
         public long Gold;
         public long Diamond;
-
+        public PlayerCard playerCard=new PlayerCard();
+        public List<PlayerDeck> playerDecks= new List<PlayerDeck>();
+        public PlayerDeckCard playerDeckCard=new PlayerDeckCard();
 
     }
 }

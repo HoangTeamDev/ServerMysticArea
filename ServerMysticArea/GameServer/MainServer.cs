@@ -9,8 +9,9 @@ namespace ServerMysticArea.Server
     public static class MainServer
     {
         private static TcpListener _listener;
-        private static SessionManager _sessionManager;
-        private static GameRouter _gameRouter;
+        private static SessionManager _sessionManager=new SessionManager();
+        private static GameRouter _gameRouter=new GameRouter();
+        
         static async Task Main(string[] args)
         {
             Console.Title = "Card Game Server";
@@ -21,7 +22,7 @@ namespace ServerMysticArea.Server
             _gameRouter = new GameRouter();
             _sessionManager._GameRouter = _gameRouter;
             _listener.Start();
-
+            CardManager.LoadAll();
             Console.WriteLine($"Server started on port {port}");
             Console.WriteLine("Waiting for connections...");
 

@@ -17,3 +17,4 @@ D:\Server\ServerMysticArea\ServerMysticArea\bin\Debug\net9.0\Microsoft.Extension
 D:\Server\ServerMysticArea\ServerMysticArea\bin\Debug\net9.0\Microsoft.Extensions.Logging.Abstractions.dll
 D:\Server\ServerMysticArea\ServerMysticArea\bin\Debug\net9.0\MySqlConnector.dll
 D:\Server\ServerMysticArea\ServerMysticArea\obj\Debug\net9.0\ServerMy.4F7BFF83.Up2Date
+D:\Server\ServerMysticArea\ServerMysticArea\obj\Debug\net9.0\ServerMysticArea.sourcelink.json
