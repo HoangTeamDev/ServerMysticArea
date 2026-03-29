@@ -13,6 +13,46 @@ namespace ServerMysticArea.GameServer
 {
     public static class GameSender
     {
+        public static void SendUpdatePlayerCard(PlayerSession session, int cardid)
+        {
+            try
+            {
+                int quantity = 0;
+                if (session.PlayerData.playerCard.AllCard.ContainsKey(cardid))
+                {
+                    quantity = session.PlayerData.playerCard.AllCard[cardid];
+                }
+                Message message = new Message(9);
+                message.writeInt(cardid);
+                message.writeInt(quantity);
+                session.Send(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+        public static void SendUpdatePlayerDeck(PlayerSession session, int cardId)
+        {
+            try
+            {
+                int quantity = 0;
+                if (session.PlayerData.playerDeckCard.Cards.ContainsKey(cardId))
+                {
+                    quantity = session.PlayerData.playerDeckCard.Cards[cardId];
+                }
+                Message message = new Message(11);
+                message.writeInt(cardId);
+                message.writeInt(quantity);
+                session.Send(message);
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
         public static void SendAllCard(PlayerSession session, Dictionary<int, Card> cards)
         {
             try
@@ -102,6 +142,7 @@ namespace ServerMysticArea.GameServer
                     message.writeInt(data.DeckId);
                     message.writeUTF(data.DeckName);
                     message.writeUTF(data.formatType);
+                    message.writeBool(data.isActive);
                     message.writeInt(data.Cards.Count);
                     foreach (var data2 in data.Cards)
                     {
@@ -150,9 +191,16 @@ namespace ServerMysticArea.GameServer
                 SendPlayerCard(session);
                 session.PlayerData.playerDecks = repo.LoadDecksByPlayerId(session.PlayerData.PlayerId);
                 SendPlayerDeck(session);
-                Console.WriteLine($"Player {session.PlayerData.playerDecks[0].Cards.Count} logged in successfully");
-                session.PlayerData.playerDeckCard = repo.LoadDeckCards(session.PlayerData.PlayerId);
-                SendPlayerDeckCard(session);
+                foreach (var data in session.PlayerData.playerDecks)
+                {
+                    if (data.isActive)
+                    {
+                        session.PlayerData.playerDeckCard = repo.LoadDeckCards(session.PlayerData.PlayerId);
+                        SendPlayerDeckCard(session);
+                        break;
+                    }
+                }
+               
             }
             catch (Exception ex)
             {

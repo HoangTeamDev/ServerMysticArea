@@ -11,7 +11,123 @@ namespace ServerMysticArea.DB
 {
     public class CardRepository
     {
-      
+        //save deck and deckcard
+        public void SaveAllPlayerCards(int playerId, Dictionary<int, int> cards)
+        {
+            using var conn = MySqlDb.GetConnection();
+            conn.Open();
+
+            using var transaction = conn.BeginTransaction();
+
+            try
+            {
+                // 1️⃣ Xóa những card không còn tồn tại trong dictionary
+                string deleteQuery = @"
+        DELETE FROM PlayerCard
+        WHERE PlayerId = @playerId
+        AND CardId NOT IN ({0})";
+
+                if (cards.Count > 0)
+                {
+                    var idList = string.Join(",", cards.Keys);
+                    deleteQuery = string.Format(deleteQuery, idList);
+
+                    using var deleteCmd = new MySqlCommand(deleteQuery, conn, transaction);
+                    deleteCmd.Parameters.AddWithValue("@playerId", playerId);
+                    deleteCmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    // Nếu dictionary rỗng → xóa hết
+                    string deleteAll = "DELETE FROM PlayerCard WHERE PlayerId = @playerId";
+                    using var deleteCmd = new MySqlCommand(deleteAll, conn, transaction);
+                    deleteCmd.Parameters.AddWithValue("@playerId", playerId);
+                    deleteCmd.ExecuteNonQuery();
+                }
+
+                // 2️⃣ Insert / Update lại toàn bộ
+                string upsertQuery = @"
+        INSERT INTO PlayerCard (PlayerId, CardId, Quantity)
+        VALUES (@playerId, @cardId, @quantity)
+        ON DUPLICATE KEY UPDATE
+        Quantity = @quantity;";
+
+                foreach (var kvp in cards)
+                {
+                    using var cmd = new MySqlCommand(upsertQuery, conn, transaction);
+                    cmd.Parameters.AddWithValue("@playerId", playerId);
+                    cmd.Parameters.AddWithValue("@cardId", kvp.Key);
+                    cmd.Parameters.AddWithValue("@quantity", kvp.Value);
+                    cmd.ExecuteNonQuery();
+                }
+
+                transaction.Commit();
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
+        public void SyncDeckCards(PlayerDeckCard deck)
+        {
+            using var conn = MySqlDb.GetConnection();
+            conn.Open();
+
+            using var transaction = conn.BeginTransaction();
+
+            try
+            {
+                // 1️⃣ Xóa những card không còn trong deck
+                if (deck.Cards.Count > 0)
+                {
+                    var idList = string.Join(",", deck.Cards.Keys);
+
+                    string deleteQuery = $@"
+            DELETE FROM DeckCard
+            WHERE DeckId = @deckId
+            AND CardId NOT IN ({idList})";
+
+                    using var deleteCmd = new MySqlCommand(deleteQuery, conn, transaction);
+                    deleteCmd.Parameters.AddWithValue("@deckId", deck.DeckId);
+                    deleteCmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    // Nếu deck rỗng → xóa hết
+                    string deleteAll = @"
+            DELETE FROM DeckCard
+            WHERE DeckId = @deckId";
+
+                    using var deleteCmd = new MySqlCommand(deleteAll, conn, transaction);
+                    deleteCmd.Parameters.AddWithValue("@deckId", deck.DeckId);
+                    deleteCmd.ExecuteNonQuery();
+                }
+
+                // 2️⃣ Insert / Update lại
+                string upsertQuery = @"
+        INSERT INTO DeckCard (DeckId, CardId, Quantity)
+        VALUES (@deckId, @cardId, @quantity)
+        ON DUPLICATE KEY UPDATE
+        Quantity = @quantity;";
+
+                foreach (var kvp in deck.Cards)
+                {
+                    using var cmd = new MySqlCommand(upsertQuery, conn, transaction);
+                    cmd.Parameters.AddWithValue("@deckId", deck.DeckId);
+                    cmd.Parameters.AddWithValue("@cardId", kvp.Key);
+                    cmd.Parameters.AddWithValue("@quantity", kvp.Value);
+                    cmd.ExecuteNonQuery();
+                }
+
+                transaction.Commit();
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
         public PlayerDeckCard LoadDeckCards(long deckId)
         {
            

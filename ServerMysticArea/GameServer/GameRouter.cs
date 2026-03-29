@@ -27,10 +27,30 @@ namespace ServerMysticArea.GameServer
                  case 3:
                     HandleCreatePlayer(session, message);
                     break;
-                
+                case 9:
+                    HandleAddCard(session, message);
+                    break;
+
             }
         }
-       
+        void HandleAddCard(PlayerSession session, Message message)
+        {
+            int type = message.readByte();
+            int cardId = message.readInt();
+            switch (type)
+            {
+                case 1:
+                    session.PlayerData.AddCard(cardId);
+                    break;
+                case 2:
+                    session.PlayerData.RemoveCard(cardId);
+                    break;
+            }
+            GameSender.SendUpdatePlayerCard(session,cardId);
+            GameSender.SendUpdatePlayerDeck(session,cardId);
+            Console.WriteLine($"Thêm thẻ {cardId} cho người chơi {session.PlayerData.Nickname}");
+           
+        }
         async void HandleCreatePlayer(PlayerSession session, Message message)
         {
             string playerName = message.readUTF();

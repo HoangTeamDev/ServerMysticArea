@@ -1,4 +1,6 @@
-﻿using ServerMysticArea.Player;
+﻿using ServerMysticArea.DB;
+using ServerMysticArea.Player;
+using ServerMysticArea.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,6 +75,10 @@ namespace ServerMysticArea.GameServer
             catch (IOException)
             {
                 Console.WriteLine($"[DISCONNECT] Session {SessionId}");
+                CardRepository cardRepository = new CardRepository();
+                cardRepository.SaveAllPlayerCards(this.PlayerData.PlayerId, this.PlayerData.playerCard.AllCard);
+                cardRepository.SyncDeckCards( this.PlayerData.playerDeckCard);
+                _manager.RemoveSession(this);
                 throw;
             }
         }
