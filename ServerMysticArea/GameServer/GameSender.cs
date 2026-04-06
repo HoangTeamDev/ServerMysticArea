@@ -57,45 +57,76 @@ namespace ServerMysticArea.GameServer
         {
             try
             {
-                Message message = new Message(5);
+                if (session == null || cards == null || cards.Count == 0)
+                    return;
 
-                message.writeInt(cards.Count);
-                foreach (var data in cards)
+                const int batchSize = 50;
+
+               
+                int totalCards = cards.Count;
+                int totalBatches = (totalCards + batchSize - 1) / batchSize;
+
+                Console.WriteLine($"Sending {totalCards} cards to client in {totalBatches} batches...");
+
+                for (int batchIndex = 0; batchIndex < totalBatches; batchIndex++)
                 {
-                    message.writeInt(data.Key);
-                    message.writeUTF(data.Value._Name);
-                    message.writeInt(data.Value._Attack);
-                    message.writeInt(data.Value._Hp);
-                    message.writeInt(data.Value._CardType);
-                    message.writeInt(data.Value._Level);
-                    message.writeUTF(data.Value._Rarity);
-                    message.writeInt(data.Value._Race);
-                    message.writeInt(data.Value._Element);
-                    message.writeInt(data.Value._KeyWord);
-                    message.writeByte((byte)data.Value.CardEffects.Count);
-                    foreach (var data2 in data.Value.CardEffects)
+                    int start = batchIndex * batchSize;
+                    int count = Math.Min(batchSize, totalCards - start);
+
+                    Message message = new Message(5);
+
+                    // Header của batch
+                    message.writeInt(totalCards);     // tổng số card toàn bộ
+                    message.writeInt(totalBatches);   // tổng số batch
+                    message.writeInt(batchIndex);     // batch hiện tại, bắt đầu từ 0
+                    message.writeInt(count);          // số card trong batch này
+
+                    Console.WriteLine($"Sending batch {batchIndex + 1}/{totalBatches}, cards: {count}");
+
+                    for (int i = 1; i <= count; i++)
                     {
-                        message.writeInt(data2._id);
-                        message.writeUTF(data2._Skillname);
-                        message.writeUTF(data2._Des);
-                        message.writeUTF(data2._TriggerType);
-                        message.writeBool(data2._OnePerTurn);
-                        message.writeUTF(data2._ActiveZone);
-                        message.writeUTF(data2._triggerMode);
+                        Card card = cards[start + i];
+                       
+
+                        message.writeInt(card._CardId);
+                        message.writeUTF(card._Name ?? string.Empty);
+                        message.writeInt(card._Attack);
+                        message.writeInt(card._Hp);
+                        message.writeInt(card._CardType);
+                        message.writeInt(card._Level);
+                        message.writeUTF(card._Rarity ?? string.Empty);
+                        message.writeInt(card._Race);
+                        message.writeInt(card._Element);
+                        message.writeInt(card._KeyWord);
+
+                        int effectCount = card.CardEffects?.Count ?? 0;
+                        if (effectCount > byte.MaxValue)
+                            throw new Exception($"Card {card._CardId} has too many effects: {effectCount}");
+
+                        message.writeByte((byte)effectCount);
+
+                        if (effectCount > 0)
+                        {
+                            foreach (var effect in card.CardEffects)
+                            {
+                                message.writeInt(effect._id);
+                                message.writeUTF(effect._Skillname ?? string.Empty);
+                                message.writeUTF(effect._Des ?? string.Empty);
+                                message.writeUTF(effect._TriggerType ?? string.Empty);
+                                message.writeBool(effect._OnePerTurn);
+                                message.writeUTF(effect._ActiveZone ?? string.Empty);
+                                message.writeUTF(effect._triggerMode ?? string.Empty);
+                            }
+                        }
                     }
+
+                    session.Send(message);
                 }
-                session.Send(message);
             }
             catch (Exception e)
             {
-
+                Console.WriteLine("SendAllCard Error: " + e.Message);
             }
-            finally
-            {
-
-            }
-
-
         }
         public static void SendLoginFail(PlayerSession session)
         {
@@ -188,15 +219,15 @@ namespace ServerMysticArea.GameServer
                 SendAllCard(session, CardManager.Cards);
                 var repo = new CardRepository();
                 session.PlayerData.playerCard.AllCard = repo.LoadPlayerCardById(session.PlayerData.PlayerId);
-                SendPlayerCard(session);
+               // SendPlayerCard(session);
                 session.PlayerData.playerDecks = repo.LoadDecksByPlayerId(session.PlayerData.PlayerId);
-                SendPlayerDeck(session);
+               // SendPlayerDeck(session);
                 foreach (var data in session.PlayerData.playerDecks)
                 {
                     if (data.isActive)
                     {
                         session.PlayerData.playerDeckCard = repo.LoadDeckCards(session.PlayerData.PlayerId);
-                        SendPlayerDeckCard(session);
+                       // SendPlayerDeckCard(session);
                         break;
                     }
                 }

@@ -223,7 +223,7 @@ namespace ServerMysticArea.DB
             using var conn = MySqlDb.GetConnection();
             conn.Open();
 
-            string query = @"SELECT ID, Name,CardType,Rarity,Cost
+            string query = @"SELECT ID, Name,CardType,Rarity
                          FROM cards";
 
             using var cmd = new MySqlCommand(query, conn);
@@ -237,7 +237,7 @@ namespace ServerMysticArea.DB
                     _Name = reader.GetString("Name"),
                     _CardType = reader.GetInt32("CardType"),
                     _Rarity = reader.GetString("Rarity"),
-                    _Cost = reader.GetInt32("Cost"),
+                    
                 };
 
                 cards.Add(card._CardId, card);

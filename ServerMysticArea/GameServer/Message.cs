@@ -18,7 +18,7 @@ namespace ServerMysticArea.GameServer
         }
         public Message(short command)
         {
-            Command = (short)command;
+            Command = (byte)command;
             _writer = new DataWriter(Command);
         }
         public void writeByte(byte value) => _writer.WriteByte(value);
