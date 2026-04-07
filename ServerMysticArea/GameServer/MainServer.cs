@@ -1,4 +1,5 @@
 ﻿using ServerMysticArea.GameServer;
+using ServerMysticArea.RoomAll;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -11,7 +12,8 @@ namespace ServerMysticArea.Server
         private static TcpListener _listener;
         private static SessionManager _sessionManager=new SessionManager();
         private static GameRouter _gameRouter=new GameRouter();
-        
+        public static RoomManager _roomManager=new RoomManager();
+        private static bool isRunning = true;
         static async Task Main(string[] args)
         {
             Console.Title = "Card Game Server";
@@ -20,12 +22,20 @@ namespace ServerMysticArea.Server
             _listener = new TcpListener(IPAddress.Any, port);
             _sessionManager = new SessionManager();
             _gameRouter = new GameRouter();
+            _roomManager = new RoomManager();
             _sessionManager._GameRouter = _gameRouter;
             _listener.Start();
             CardManager.LoadAll();
             Console.WriteLine($"Server started on port {port}");
             Console.WriteLine("Waiting for connections...");
-
+            new Thread(() =>
+            {
+                while (isRunning)
+                {
+                    _roomManager.UpdateAllRooms();
+                    Thread.Sleep(200);
+                }
+            }).Start();
             while (true)
             {
                 try
@@ -43,6 +53,9 @@ namespace ServerMysticArea.Server
                     Console.WriteLine($"[ERROR] {ex.Message}");
                 }
             }
+
+           
+
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using ServerMysticArea.CardData;
 using ServerMysticArea.DB;
 using ServerMysticArea.Player;
+using ServerMysticArea.RoomAll;
 using ServerMysticArea.Server;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +15,70 @@ namespace ServerMysticArea.GameServer
 {
     public static class GameSender
     {
+        public static void SendStartGame(PlayerSession session, Room room)
+        {
+            try
+            {
+                Message message = new Message(13);
+                message.writeByte(5);
+                message.writeBool(room.HostPlayer.Session == session);
+
+                message.writeInt(room.HostPlayer.HP);
+                message.writeInt(room.GuestPlayer.HP);
+                session.Send(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+        public static void SendCreateRoom(PlayerSession session, int roomId)
+        {
+            try
+            {
+                Message message = new Message(13);
+                message.writeByte(1);
+                message.writeInt(roomId);
+                session.Send(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+        public static void SendJoinRoom(PlayerSession session, PlayerSession playerSession)
+        {
+            try
+            {
+                Message message = new Message(13);
+                message.writeByte(2);
+                message.writeInt(playerSession.PlayerData.PlayerId);
+                message.writeUTF(playerSession.PlayerData.Nickname);
+                message.writeInt(playerSession.PlayerData.Level);
+                session.Send(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+        public static void SendInfoJoinRoom(PlayerSession session,PlayerSession playerSession, int zoomid)
+        {
+            try
+            {
+                Message message = new Message(13);
+                message.writeByte(4);
+                message.writeInt(zoomid);
+                message.writeInt(playerSession.PlayerData.PlayerId);
+                message.writeUTF(playerSession.PlayerData.Nickname);
+                message.writeInt(playerSession.PlayerData.Level);
+                session.Send(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
         public static void SendUpdatePlayerCard(PlayerSession session, int cardid)
         {
             try
@@ -45,83 +111,78 @@ namespace ServerMysticArea.GameServer
                 message.writeInt(cardId);
                 message.writeInt(quantity);
                 session.Send(message);
-                
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
         }
+        public static void SendEffCard(PlayerSession session, int cardId)
+        {
+            try
+            {
+                if (!CardManager.Cards.ContainsKey(cardId))
+                    return;
+                Card card = CardManager.Cards[cardId];
+                Message message = new Message(12);
+                int effectCount = card.CardEffects?.Count ?? 0;
+                if (effectCount > byte.MaxValue)
+                    throw new Exception($"Card {card._CardId} has too many effects: {effectCount}");
 
+                message.writeInt(card._CardId);
+                message.writeUTF(card._Name ?? string.Empty);
+                message.writeInt(card._CardType);
+                message.writeUTF(card._Rarity ?? string.Empty);
+                message.writeInt(card._Race);
+                message.writeInt(card._Hp);
+                message.writeInt(card._Attack);
+                message.writeInt(card._Level);
+                message.writeInt(card._KeyWord);
+                message.writeInt(card._Element);
+
+                if (effectCount > 0)
+                {
+                    message.writeByte((byte)effectCount);
+
+                    foreach (var effect in card.CardEffects)
+                    {
+                        message.writeInt(effect._id);
+                        message.writeUTF(effect._Skillname ?? string.Empty);
+                        message.writeUTF(effect._Des ?? string.Empty);
+                        message.writeUTF(effect._TriggerType ?? string.Empty);
+                        message.writeBool(effect._OnePerTurn);
+                        message.writeUTF(effect._ActiveZone ?? string.Empty);
+                        message.writeUTF(effect._triggerMode ?? string.Empty);
+                    }
+                }
+                session.Send(message);
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
         public static void SendAllCard(PlayerSession session, Dictionary<int, Card> cards)
         {
             try
             {
                 if (session == null || cards == null || cards.Count == 0)
                     return;
-
-                const int batchSize = 50;
-
-               
-                int totalCards = cards.Count;
-                int totalBatches = (totalCards + batchSize - 1) / batchSize;
-
-                Console.WriteLine($"Sending {totalCards} cards to client in {totalBatches} batches...");
-
-                for (int batchIndex = 0; batchIndex < totalBatches; batchIndex++)
+                Message message = new Message(5);
+                message.writeInt(cards.Count);
+                foreach (var card in cards.Values)
                 {
-                    int start = batchIndex * batchSize;
-                    int count = Math.Min(batchSize, totalCards - start);
+                    message.writeInt(card._CardId);
+                    message.writeUTF(card._Name ?? string.Empty);
+                    message.writeInt(card._CardType);
+                    message.writeUTF(card._Rarity ?? string.Empty);
 
-                    Message message = new Message(5);
-
-                    // Header của batch
-                    message.writeInt(totalCards);     // tổng số card toàn bộ
-                    message.writeInt(totalBatches);   // tổng số batch
-                    message.writeInt(batchIndex);     // batch hiện tại, bắt đầu từ 0
-                    message.writeInt(count);          // số card trong batch này
-
-                    Console.WriteLine($"Sending batch {batchIndex + 1}/{totalBatches}, cards: {count}");
-
-                    for (int i = 1; i <= count; i++)
-                    {
-                        Card card = cards[start + i];
-                       
-
-                        message.writeInt(card._CardId);
-                        message.writeUTF(card._Name ?? string.Empty);
-                        message.writeInt(card._Attack);
-                        message.writeInt(card._Hp);
-                        message.writeInt(card._CardType);
-                        message.writeInt(card._Level);
-                        message.writeUTF(card._Rarity ?? string.Empty);
-                        message.writeInt(card._Race);
-                        message.writeInt(card._Element);
-                        message.writeInt(card._KeyWord);
-
-                        int effectCount = card.CardEffects?.Count ?? 0;
-                        if (effectCount > byte.MaxValue)
-                            throw new Exception($"Card {card._CardId} has too many effects: {effectCount}");
-
-                        message.writeByte((byte)effectCount);
-
-                        if (effectCount > 0)
-                        {
-                            foreach (var effect in card.CardEffects)
-                            {
-                                message.writeInt(effect._id);
-                                message.writeUTF(effect._Skillname ?? string.Empty);
-                                message.writeUTF(effect._Des ?? string.Empty);
-                                message.writeUTF(effect._TriggerType ?? string.Empty);
-                                message.writeBool(effect._OnePerTurn);
-                                message.writeUTF(effect._ActiveZone ?? string.Empty);
-                                message.writeUTF(effect._triggerMode ?? string.Empty);
-                            }
-                        }
-                    }
-
-                    session.Send(message);
                 }
+                session.Send(message);
             }
             catch (Exception e)
             {
@@ -219,19 +280,19 @@ namespace ServerMysticArea.GameServer
                 SendAllCard(session, CardManager.Cards);
                 var repo = new CardRepository();
                 session.PlayerData.playerCard.AllCard = repo.LoadPlayerCardById(session.PlayerData.PlayerId);
-               // SendPlayerCard(session);
+                // SendPlayerCard(session);
                 session.PlayerData.playerDecks = repo.LoadDecksByPlayerId(session.PlayerData.PlayerId);
-               // SendPlayerDeck(session);
+                // SendPlayerDeck(session);
                 foreach (var data in session.PlayerData.playerDecks)
                 {
                     if (data.isActive)
                     {
                         session.PlayerData.playerDeckCard = repo.LoadDeckCards(session.PlayerData.PlayerId);
-                       // SendPlayerDeckCard(session);
+                        // SendPlayerDeckCard(session);
                         break;
                     }
                 }
-               
+
             }
             catch (Exception ex)
             {

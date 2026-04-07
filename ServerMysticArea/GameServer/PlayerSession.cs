@@ -1,5 +1,6 @@
 ﻿using ServerMysticArea.DB;
 using ServerMysticArea.Player;
+using ServerMysticArea.RoomAll;
 using ServerMysticArea.Server;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace ServerMysticArea.GameServer
     public class PlayerSession
     {
         public int SessionId { get; }
+        public Room CurrentRoom { get; set; }
         public TcpClient Client { get; }
         public NetworkStream Stream { get; }
         public BinaryReader reader { get; }
@@ -115,6 +117,7 @@ namespace ServerMysticArea.GameServer
         {
             _isRunning = false;
             _manager.RemoveSession(this);
+            MainServer._roomManager.HandleDisconnect(this);
             Client.Close();
         }
         public void Send(Message m)

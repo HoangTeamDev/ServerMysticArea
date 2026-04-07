@@ -1,5 +1,8 @@
-﻿using ServerMysticArea.DB;
+﻿using ServerMysticArea.CardData;
+using ServerMysticArea.DB;
 using ServerMysticArea.Player;
+using ServerMysticArea.RoomAll;
+using ServerMysticArea.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,8 +33,84 @@ namespace ServerMysticArea.GameServer
                 case 9:
                     HandleAddCard(session, message);
                     break;
+                case 12:
+                    HandleEffCard(session, message);
+                    break;
+                case 13:
+                    HandleCreateRoom(session, message);
+                    break;
 
             }
+        }
+        void HandleCreateRoom(PlayerSession session, Message message)
+        {
+            int type = message.readByte();
+            switch(type)
+            {
+                case 1:
+                    MainServer._roomManager.CreateRoom(session);
+                    break;
+                case 2:
+                    int roomId = message.readInt();
+                    Room room= MainServer._roomManager.GetRoomById(roomId);
+                    room.AddGuestPlayer(session);
+                    PlayerSession playerSession = room.GetOpponent(session);
+                   
+                    Console.WriteLine($"Người chơi {session.PlayerData.Nickname} đã tham gia phòng {room.RoomId} của {playerSession.PlayerData.Nickname}");
+                    GameSender.SendJoinRoom(room.GetOpponent(session),session);
+                    GameSender.SendInfoJoinRoom(session, playerSession, roomId);
+                    /* if (room == null)
+                     {
+                         GameSender.SendNotiPlayer(session, "Phòng không tồn tại!!!");
+                         return;
+                     }
+                     if(room.HostPlayer.Session == session)
+                     {
+                         GameSender.SendNotiPlayer(session, "Bạn đã là chủ phòng này rồi!!!");
+                         return;
+                      }
+                     if(room.GuestPlayer != null)
+                     {
+                         GameSender.SendNotiPlayer(session, "Phòng đã đủ người chơi!!!");
+                         return;
+                     }
+                     if(session.CurrentRoom != null)
+                     {
+                         GameSender.SendNotiPlayer(session, "Bạn đã ở trong phòng khác rồi!!!");
+                         return;
+                     }
+                     else
+                     {
+
+                     }*/
+
+
+
+                    break;
+                case 3:
+                    MainServer._roomManager.RemovePlayerFromRoom(session);
+                    break;
+                case 5:
+                    {
+                        Room room1 = MainServer._roomManager.GetRoomById(session.CurrentRoom.RoomId);
+                        room1.StartGame();
+                    }
+                    break;
+            }
+           
+           
+           
+        }
+        void HandleEffCard(PlayerSession session, Message message)
+        {  
+            int cardId = message.readInt();
+           
+           
+
+            GameSender.SendEffCard(session,cardId);
+               
+                Console.WriteLine($"Gửi thông tin thẻ cho người chơi {session.PlayerData.Nickname}");
+
         }
         void HandleAddCard(PlayerSession session, Message message)
         {
