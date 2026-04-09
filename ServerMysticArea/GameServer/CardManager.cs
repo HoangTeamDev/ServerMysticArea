@@ -27,5 +27,9 @@ namespace ServerMysticArea.GameServer
         {
             return Cards[id];
         }
+        public static byte Getcardtype(int id)
+        {
+            return (byte)Cards[id]._CardType;
+        }
     }
 }

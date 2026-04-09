@@ -178,11 +178,35 @@ namespace ServerMysticArea.GameServer
                 {
                     message.writeInt(card._CardId);
                     message.writeUTF(card._Name ?? string.Empty);
-                    message.writeInt(card._CardType);
                     message.writeUTF(card._Rarity ?? string.Empty);
+                    message.writeByte((byte)card._KeyWord);
+                    message.writeByte((byte)card._CardType);
+                    if(card._CardType is 1)
+                    {
+                        message.writeShort((byte)card._Hp);
+                        message.writeShort((byte)card._Attack);
+                        message.writeByte((byte)card._Element);
+                        message.writeByte((byte)card._Level);                       
+                        message.writeByte((byte)card._Race);
+
+                    }
 
                 }
                 session.Send(message);
+                var repo = new CardRepository();
+                session.PlayerData.playerCard.AllCard = repo.LoadPlayerCardById(session.PlayerData.PlayerId);
+                SendPlayerCard(session);
+                session.PlayerData.playerDecks = repo.LoadDecksByPlayerId(session.PlayerData.PlayerId);
+                SendPlayerDeck(session);
+                foreach (var data in session.PlayerData.playerDecks)
+                {
+                    if (data.isActive)
+                    {
+                        session.PlayerData.playerDeckCard = repo.LoadDeckCards(session.PlayerData.PlayerId);
+                        SendPlayerDeckCard(session);
+                        break;
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -213,6 +237,7 @@ namespace ServerMysticArea.GameServer
                 {
                     message.writeInt(data.Key);
                     message.writeInt(data.Value);
+                    message.writeByte(CardManager.Getcardtype(data.Key));
                 }
                 session.Send(message);
             }
@@ -278,20 +303,7 @@ namespace ServerMysticArea.GameServer
                 session.Send(message);
                 SendInfo(session);
                 SendAllCard(session, CardManager.Cards);
-                var repo = new CardRepository();
-                session.PlayerData.playerCard.AllCard = repo.LoadPlayerCardById(session.PlayerData.PlayerId);
-                // SendPlayerCard(session);
-                session.PlayerData.playerDecks = repo.LoadDecksByPlayerId(session.PlayerData.PlayerId);
-                // SendPlayerDeck(session);
-                foreach (var data in session.PlayerData.playerDecks)
-                {
-                    if (data.isActive)
-                    {
-                        session.PlayerData.playerDeckCard = repo.LoadDeckCards(session.PlayerData.PlayerId);
-                        // SendPlayerDeckCard(session);
-                        break;
-                    }
-                }
+               
 
             }
             catch (Exception ex)
