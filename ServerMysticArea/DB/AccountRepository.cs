@@ -11,18 +11,21 @@ namespace ServerMysticArea.DB
 {
     public static class AccountRepository
     {
-        public static async Task<AccountData> GetByUsername(string username)
+        public static async Task<AccountData> GetByUsername(string username, string pass)
         {
             using var conn = MySqlDb.GetConnection();
             await conn.OpenAsync();
 
             var cmd = new MySqlCommand(
-                "SELECT * FROM Users WHERE username=@u", conn);
+                "SELECT * FROM Users WHERE username=@u AND PasswordHash=@p", conn);
 
             cmd.Parameters.AddWithValue("@u", username);
+            cmd.Parameters.AddWithValue("@p", pass);
 
-            var reader = await cmd.ExecuteReaderAsync();
-            if (!reader.Read()) return null;
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            if (!await reader.ReadAsync())
+                return null;
 
             return new AccountData
             {

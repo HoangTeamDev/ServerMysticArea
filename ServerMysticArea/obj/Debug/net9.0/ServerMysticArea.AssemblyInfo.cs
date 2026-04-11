@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ServerMysticArea")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dcf5188ae191b2bf6af853734ecfa78b7b7ae4b9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3e1eb63f5d20090172a0f70e78bb00632154bb92")]
 [assembly: System.Reflection.AssemblyProductAttribute("ServerMysticArea")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ServerMysticArea")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

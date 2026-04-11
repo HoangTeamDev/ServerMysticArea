@@ -22,9 +22,9 @@ namespace ServerMysticArea.GameServer
         public BinaryReader reader { get; }
         public BinaryWriter writer { get; }
         public PlayerData PlayerData { get; private set; }
-        public int? PlayerId { get; private set; }
+        public int PlayerId { get; private set; }
         public AccountData accountData { get; private set; }
-        public bool IsAuthenticated => PlayerId.HasValue;
+      
 
         private readonly SessionManager _manager;
         private bool _isRunning;

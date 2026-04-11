@@ -1,5 +1,6 @@
 ﻿using ServerMysticArea.CardData;
 using ServerMysticArea.GameServer;
+using ServerMysticArea.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,27 +9,51 @@ using System.Threading.Tasks;
 
 namespace ServerMysticArea.RoomAll
 {
+    public enum ZoneType
+    {
+        Deck,
+        Hand,
+        Monster,
+        SpellTrap,
+        Graveyard,
+        Banished
+    }
+    public enum PhaseType
+    {
+        Start,
+        Draw,
+        Main,       
+        End
+    }
+    
     public class Room
     {
         public int RoomId { get; private set; }
-        public PlayerState HostPlayer { get; private set; }
-        public PlayerState GuestPlayer { get; private set; }
+        public PlayerState HostPlayer { get;  set; }
+        public PlayerState GuestPlayer { get;  set; }
 
-        public bool IsStarted { get; private set; }
-        public bool IsFinished { get; private set; }
+        public bool IsStarted { get;  set; }
+        public bool IsFinished { get;  set; }
 
-        public PlayerSession CurrentTurnPlayer { get; private set; }
-        public int TurnNumber { get; private set; }
-
+        public PlayerState CurrentTurnPlayerId { get;  set; }
+        public int TurnNumber { get;  set; }
+        public PhaseType CurrentPhase { get; set; }
         // Ví dụ state game
-       
-        public DateTime TurnStartTime { get; private set; }
-        public int TurnDurationSeconds { get; private set; } = 60;
+
+        public DateTime TurnStartTime { get;  set; }
+        public int TurnDurationSeconds { get;  set; } = 60;
+        public int WinnerPlayerId;
 
         public PlayerState GetState(PlayerSession player)
         {
             if (HostPlayer.Session == player) return HostPlayer;
             if (GuestPlayer.Session == player) return GuestPlayer;
+            return null;
+        }
+        public PlayerState GetOpState(PlayerState playerState)
+        {
+            if(HostPlayer==playerState)return GuestPlayer;
+            if(GuestPlayer== playerState)return HostPlayer;
             return null;
         }
         public int GetRemainingTurnTime()
@@ -39,7 +64,7 @@ namespace ServerMysticArea.RoomAll
         public void Update()
         {
             if (!IsStarted || IsFinished) return;
-            if (CurrentTurnPlayer == null) return;
+           
 
             if (GetRemainingTurnTime() <= 0)
             {
@@ -48,14 +73,12 @@ namespace ServerMysticArea.RoomAll
         }
         private void HandleTurnTimeout()
         {
-            EndTurn(CurrentTurnPlayer);
+            EndTurn(CurrentTurnPlayerId.Session);
         }
         public void EndTurn(PlayerSession player)
         {
             if (!IsStarted || IsFinished) return;
-            if (player != CurrentTurnPlayer) return;
-
-            CurrentTurnPlayer = GetOpponent(player);
+            MainServer._turnManager.EndTurn(this);   
             TurnNumber++;
             TurnStartTime = DateTime.UtcNow;
         }
@@ -65,7 +88,7 @@ namespace ServerMysticArea.RoomAll
             HostPlayer = new PlayerState
             {
                 Session = hostPlayer,
-                HP = 8000
+              
             };
             GuestPlayer = new PlayerState();
             IsStarted = false;
@@ -92,18 +115,20 @@ namespace ServerMysticArea.RoomAll
 
         public void StartGame()
         {
-            if (!CanStart()) return;
-
-            IsStarted = true;
-            IsFinished = false;
-            TurnNumber = 1;
-            HostPlayer.HP = 8000;
-            GuestPlayer.HP = 8000;
-
-           
-            GameSender.SendStartGame(HostPlayer.Session, this);
+            try
+            {
+                if (!CanStart()) return;
+                MainServer._battleManager.StartBattle(this);      
+                GameSender.SendStartGame(HostPlayer.Session, this);
                 GameSender.SendStartGame(GuestPlayer.Session, this);
-            Console.WriteLine($"Room {RoomId} started: {HostPlayer.Session.PlayerData.Nickname} vs {GuestPlayer.Session.PlayerData.Nickname}");
+                Console.WriteLine($"Room {RoomId} started: {HostPlayer.Session.PlayerData.Nickname} vs {GuestPlayer.Session.PlayerData.Nickname}");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            } 
+            
         }
 
         public PlayerSession GetOpponent(PlayerSession player)
@@ -111,6 +136,57 @@ namespace ServerMysticArea.RoomAll
             if (player == HostPlayer.Session) return GuestPlayer.Session;
             if (player == GuestPlayer.Session) return HostPlayer.Session;
             return null;
+        }
+        private static long _globalInstanceId = 1;
+        public List<CardInstance> CreateDeck(PlayerSession playerSession)
+        {
+            List<CardInstance> cardInstances = new List<CardInstance>();
+
+            foreach (var data in playerSession.PlayerData.playerDeckCard.Cards)
+            {
+                int cardId = data.Key;
+                int count = data.Value;
+
+                while (count > 0)
+                {
+                    CardInstance card = new CardInstance
+                    {
+                        InstanceId = _globalInstanceId++,
+                        CardId = cardId,
+
+                        OwnerPlayerId = playerSession.PlayerId,
+                        ControllerPlayerId = playerSession.PlayerId,
+
+                        CurrentZone = ZoneType.Deck,
+                        SlotIndex = -1,
+
+                        IsFaceUp = false,
+
+                        // nếu có stat runtime
+                        CurrentAtk = 0,
+                        CurrentHp = 0
+                    };
+
+                    cardInstances.Add(card);
+                    count--;
+                }
+            }
+
+            Shuffle(cardInstances);
+
+            return cardInstances;
+        }
+        private static Random rng = new Random();
+
+        public void Shuffle(List<CardInstance> deck)
+        {
+            int n = deck.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                (deck[n], deck[k]) = (deck[k], deck[n]);
+            }
         }
         public void HandleDisconnect(PlayerSession player, RoomManager roomManager)
         {

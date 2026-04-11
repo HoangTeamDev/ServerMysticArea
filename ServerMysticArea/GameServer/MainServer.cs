@@ -1,4 +1,5 @@
-﻿using ServerMysticArea.GameServer;
+﻿using ServerMysticArea.Batte;
+using ServerMysticArea.GameServer;
 using ServerMysticArea.RoomAll;
 using System;
 using System.Net;
@@ -13,6 +14,13 @@ namespace ServerMysticArea.Server
         private static SessionManager _sessionManager=new SessionManager();
         private static GameRouter _gameRouter=new GameRouter();
         public static RoomManager _roomManager=new RoomManager();
+        public static ActionProcessor _actionProcessor=new ActionProcessor();
+        public static BattleManager _battleManager=new BattleManager();
+        public static CardInstanceManager _cardInstanceManager=new CardInstanceManager();
+        public static RuleValidator _ruleValidator=new RuleValidator();
+        public static TurnManager _turnManager=new TurnManager();
+        public static ZoneManager _zoneManager=new ZoneManager();
+
         private static bool isRunning = true;
         static async Task Main(string[] args)
         {
@@ -23,6 +31,12 @@ namespace ServerMysticArea.Server
             _sessionManager = new SessionManager();
             _gameRouter = new GameRouter();
             _roomManager = new RoomManager();
+            _battleManager = new BattleManager();
+            _cardInstanceManager = new CardInstanceManager();
+            _ruleValidator = new RuleValidator();
+            _turnManager = new TurnManager();
+            _zoneManager = new ZoneManager();
+            _actionProcessor = new ActionProcessor();
             _sessionManager._GameRouter = _gameRouter;
             _listener.Start();
             CardManager.LoadAll();

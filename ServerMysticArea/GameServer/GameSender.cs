@@ -25,6 +25,19 @@ namespace ServerMysticArea.GameServer
 
                 message.writeInt(room.HostPlayer.HP);
                 message.writeInt(room.GuestPlayer.HP);
+                int countdeckHost=room.HostPlayer.Deck.Count;
+                message.writeByte((byte)countdeckHost);
+                foreach (var item in room.HostPlayer.Deck)
+                {
+                    message.writeInt((int)item.InstanceId);
+                    message.writeInt(item.CardId);
+                }
+                message.writeByte((byte)room.GuestPlayer.Deck.Count);
+                foreach (var item in room.GuestPlayer.Deck)
+                {
+                    message.writeInt((int)item.InstanceId);
+                    message.writeInt(item.CardId);
+                }
                 session.Send(message);
             }
             catch (Exception ex)
@@ -91,6 +104,7 @@ namespace ServerMysticArea.GameServer
                 Message message = new Message(9);
                 message.writeInt(cardid);
                 message.writeInt(quantity);
+                message.writeByte((byte)CardManager.Getcardtype(cardid));
                 session.Send(message);
             }
             catch (Exception ex)
@@ -110,6 +124,7 @@ namespace ServerMysticArea.GameServer
                 Message message = new Message(11);
                 message.writeInt(cardId);
                 message.writeInt(quantity);
+                message.writeByte((byte)CardManager.Getcardtype(cardId));
                 session.Send(message);
 
             }
@@ -183,8 +198,8 @@ namespace ServerMysticArea.GameServer
                     message.writeByte((byte)card._CardType);
                     if(card._CardType is 1)
                     {
-                        message.writeShort((byte)card._Hp);
-                        message.writeShort((byte)card._Attack);
+                        message.writeShort((short)card._Hp);
+                        message.writeShort((short)card._Attack);
                         message.writeByte((byte)card._Element);
                         message.writeByte((byte)card._Level);                       
                         message.writeByte((byte)card._Race);
@@ -286,6 +301,7 @@ namespace ServerMysticArea.GameServer
                 {
                     message.writeInt(data.Key);
                     message.writeInt(data.Value);
+                    message.writeByte((byte)CardManager.Getcardtype(data.Key));
                 }
                 session.Send(message);
             }

@@ -31,5 +31,13 @@ namespace ServerMysticArea.GameServer
         {
             return (byte)Cards[id]._CardType;
         }
+        public static short GetATK(int id)
+        {
+            return (short)Cards[id]._Attack;
+        }
+        public static short GetHP(int id)
+        {
+            return (short)Cards[id]._Hp;
+        }
     }
 }

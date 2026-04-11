@@ -159,7 +159,7 @@ namespace ServerMysticArea.GameServer
             string playerName = message.readUTF();
             string passwprd = message.readUTF();
             Console.WriteLine("NHan tai khoan:" + playerName + "__" + passwprd);
-            var account = await AccountRepository.GetByUsername(playerName);
+            var account = await AccountRepository.GetByUsername(playerName,passwprd);
             if (account == null)
             {
                 int r = RandomNumberGenerator.GetInt32(5, 1000);
@@ -180,7 +180,7 @@ namespace ServerMysticArea.GameServer
             // For this example, we'll just accept any login.
 
 
-            var account = await AccountRepository.GetByUsername(username);
+            var account = await AccountRepository.GetByUsername(username,password);
             if (account != null)
             {
                 Console.WriteLine($"Acc{account.AccountId}");

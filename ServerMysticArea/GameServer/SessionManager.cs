@@ -28,10 +28,8 @@ namespace ServerMysticArea.GameServer
         {
             _sessions.TryRemove(session.SessionId, out _);
 
-            if (session.PlayerId.HasValue)
-            {
-                Console.WriteLine($"Player {session.PlayerId} disconnected");
-            }
+            Console.WriteLine($"Player {session.PlayerId} disconnected");
+
         }
 
         public PlayerSession? GetSession(int sessionId)
