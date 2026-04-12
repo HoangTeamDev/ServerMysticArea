@@ -190,6 +190,7 @@ namespace ServerMysticArea.GameServer
                 if (player != null)
                 {
                     session.SetPlayerData(player);
+                    session.Authenticate(player.PlayerId);
                     GameSender.SendLoginSucces(session);
                     Console.WriteLine($"✅ LOGIN: {player.Nickname} (Session {session.SessionId})");
                 }

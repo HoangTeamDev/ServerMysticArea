@@ -213,11 +213,13 @@ namespace ServerMysticArea.GameServer
                 SendPlayerCard(session);
                 session.PlayerData.playerDecks = repo.LoadDecksByPlayerId(session.PlayerData.PlayerId);
                 SendPlayerDeck(session);
+                
                 foreach (var data in session.PlayerData.playerDecks)
                 {
+                    Console.WriteLine("so deck" + data.isActive);
                     if (data.isActive)
                     {
-                        session.PlayerData.playerDeckCard = repo.LoadDeckCards(session.PlayerData.PlayerId);
+                        session.PlayerData.playerDeckCard = repo.LoadDeckCards(data.DeckId);
                         SendPlayerDeckCard(session);
                         break;
                     }

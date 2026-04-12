@@ -1,4 +1,5 @@
-﻿using ServerMysticArea.RoomAll;
+﻿using ServerMysticArea.GameServer;
+using ServerMysticArea.RoomAll;
 using ServerMysticArea.Server;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,11 @@ namespace ServerMysticArea.Batte
             room.IsFinished = false;
             MainServer._zoneManager.DrawMulti(room.HostPlayer, 5);
             MainServer._zoneManager.DrawMulti(room.GuestPlayer, 5);
+
+            GameSenderBattle.SendDrawStat(room.HostPlayer.Session, room.HostPlayer);
+            GameSenderBattle.SendDrawStat(room.HostPlayer.Session, room.GuestPlayer);
+            GameSenderBattle.SendDrawStat(room.GuestPlayer.Session, room.HostPlayer);
+            GameSenderBattle.SendDrawStat(room.GuestPlayer.Session, room.GuestPlayer);
             _turnManager.StartFirstTurn(room,room.HostPlayer);
         }
 
@@ -66,6 +72,8 @@ namespace ServerMysticArea.Batte
             room.CurrentPhase = PhaseType.Draw;
 
           room.CurrentTurnPlayerId = room.HostPlayer;
+            GameSender.SendStartGame(room.HostPlayer.Session, room);
+            GameSender.SendStartGame(room.GuestPlayer.Session, room);
         }
 
         private void DrawStartingHand(Room room)

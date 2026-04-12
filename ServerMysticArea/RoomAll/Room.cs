@@ -118,9 +118,8 @@ namespace ServerMysticArea.RoomAll
             try
             {
                 if (!CanStart()) return;
+                
                 MainServer._battleManager.StartBattle(this);      
-                GameSender.SendStartGame(HostPlayer.Session, this);
-                GameSender.SendStartGame(GuestPlayer.Session, this);
                 Console.WriteLine($"Room {RoomId} started: {HostPlayer.Session.PlayerData.Nickname} vs {GuestPlayer.Session.PlayerData.Nickname}");
 
             }

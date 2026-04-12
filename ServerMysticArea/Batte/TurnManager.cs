@@ -1,4 +1,5 @@
 ﻿using ServerMysticArea.RoomAll;
+using ServerMysticArea.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,11 @@ namespace ServerMysticArea.Batte
 {
     public class TurnManager
     {
-        private readonly ZoneManager _zoneManager;
+       
 
         public const int TURN_TIME_SECONDS = 60;
 
-        public TurnManager(ZoneManager zoneManager)
-        {
-            _zoneManager = zoneManager;
-        }
+      
 
         public void StartFirstTurn(Room room, PlayerState firstPlayerId)
         {
@@ -51,7 +49,7 @@ namespace ServerMysticArea.Batte
 
             if (drawCard)
             {
-                var drawnCard = _zoneManager.DrawCard(state);
+                var drawnCard = MainServer._zoneManager.DrawCard(state);
 
                 if (drawnCard != null)
                 {
