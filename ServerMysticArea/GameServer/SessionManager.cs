@@ -13,6 +13,7 @@ namespace ServerMysticArea.GameServer
         private readonly ConcurrentDictionary<int, PlayerSession> _sessions = new();
         private int _sessionIdCounter = 0;
         public GameRouter _GameRouter;
+        public GameRouterBattle _Battle;
 
         public PlayerSession CreateSession(TcpClient client)
         {
@@ -40,8 +41,15 @@ namespace ServerMysticArea.GameServer
 
         public void Dispatch(PlayerSession session, Message message)
         {
-            // Chuyển sang Game Logic Layer
-            _GameRouter.Handle(session, message);
+            if(message.Command is 14 or 15)
+            {
+                _Battle.Handle(session, message);
+            }
+            else
+            {
+                _GameRouter.Handle(session, message);
+
+            }
         }
 
         public void Broadcast(Message message)

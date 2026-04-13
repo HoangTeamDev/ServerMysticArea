@@ -20,7 +20,7 @@ namespace ServerMysticArea.Server
         public static RuleValidator _ruleValidator=new RuleValidator();
         public static TurnManager _turnManager=new TurnManager();
         public static ZoneManager _zoneManager=new ZoneManager();
-
+        public static GameRouterBattle gameRouterBattle=new GameRouterBattle();
         private static bool isRunning = true;
         static async Task Main(string[] args)
         {
@@ -37,7 +37,9 @@ namespace ServerMysticArea.Server
             _turnManager = new TurnManager();
             _zoneManager = new ZoneManager();
             _actionProcessor = new ActionProcessor();
+            gameRouterBattle = new GameRouterBattle();
             _sessionManager._GameRouter = _gameRouter;
+            _sessionManager._Battle = gameRouterBattle;
             _listener.Start();
             CardManager.LoadAll();
             Console.WriteLine($"Server started on port {port}");

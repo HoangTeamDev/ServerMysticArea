@@ -46,6 +46,7 @@ namespace ServerMysticArea.GameServer
                 while (_isRunning)
                 {
                     var message = await ReadMessageAsync();
+                    
                     _manager.Dispatch(this, message);
                 }
             }

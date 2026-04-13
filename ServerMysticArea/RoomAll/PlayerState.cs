@@ -19,5 +19,6 @@ namespace ServerMysticArea.RoomAll
         public CardInstance[] Monsterzone= new CardInstance[5];
         public CardInstance[] Trapzone= new CardInstance[5];
         public bool HasNormal { get; set; }
+        public bool isDrawStart { get; set; }
     }
 }

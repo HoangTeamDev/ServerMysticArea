@@ -29,9 +29,12 @@ namespace ServerMysticArea.Batte
             GameSenderBattle.SendDrawStat(room.HostPlayer.Session, room.GuestPlayer);
             GameSenderBattle.SendDrawStat(room.GuestPlayer.Session, room.HostPlayer);
             GameSenderBattle.SendDrawStat(room.GuestPlayer.Session, room.GuestPlayer);
-            _turnManager.StartFirstTurn(room,room.HostPlayer);
+            
         }
-
+        public void StartFirstTurn(Room room)
+        {
+            _turnManager.StartFirstTurn(room, room.HostPlayer);
+        }
         public void EndBattle(Room room, int winnerPlayerId)
         {
             if (room == null || room.HostPlayer == null || room.GuestPlayer==null)
@@ -65,9 +68,10 @@ namespace ServerMysticArea.Batte
             var p2Deck = _cardInstanceManager.CreateDeck(room.GuestPlayer.Session);
             room.HostPlayer.HP = 8000;
             room.HostPlayer.Deck = p1Deck;
+            room.HostPlayer.isDrawStart=false;
             room.GuestPlayer.HP = 8000;
             room.GuestPlayer.Deck = p2Deck;
-           
+           room.GuestPlayer.isDrawStart = false;
             room.TurnNumber = 1;
             room.CurrentPhase = PhaseType.Draw;
 
@@ -76,13 +80,6 @@ namespace ServerMysticArea.Batte
             GameSender.SendStartGame(room.GuestPlayer.Session, room);
         }
 
-        private void DrawStartingHand(Room room)
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                _zoneManager.DrawCard(room.HostPlayer);
-               _zoneManager.DrawCard(room.GuestPlayer);
-            }
-        }
+        
     }
 }

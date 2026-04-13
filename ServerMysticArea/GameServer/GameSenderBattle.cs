@@ -30,6 +30,33 @@ namespace ServerMysticArea.GameServer
                 Console.WriteLine(ex.ToString());
             }
         }
+        public static void SendAllRoom(Room room, Message message)
+        {
+            room.HostPlayer.Session.Send(message);
+            room.GuestPlayer.Session.Send(message);
+        }
+
+        public static Message SenDrawCard(List<CardInstance> cardInstances, int playerid)
+        {
+            var message = new Message(14);
+            message.writeByte(2);
+            message.writeInt(playerid);
+            message.writeByte((byte)cardInstances.Count);
+            foreach (var cardInstance in cardInstances)
+            {
+                message.writeInt((int)cardInstance.InstanceId);
+                message.writeInt(cardInstance.CardId);
+            }
+            return message;
+        }
+
+        public static Message SendTitlePhase(string text)
+        {
+            var mess = new Message(15);
+            mess.writeByte(1);
+            mess.writeUTF(text);
+            return mess;
+        }
       
     }
 }

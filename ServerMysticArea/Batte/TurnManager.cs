@@ -1,4 +1,5 @@
-﻿using ServerMysticArea.RoomAll;
+﻿using ServerMysticArea.GameServer;
+using ServerMysticArea.RoomAll;
 using ServerMysticArea.Server;
 using System;
 using System.Collections.Generic;
@@ -25,8 +26,8 @@ namespace ServerMysticArea.Batte
 
             room.CurrentTurnPlayerId = firstPlayerId;
             room.TurnNumber = 1;
-
-            StartTurn(room, drawCard: false);
+            
+            StartTurn(room, drawCard: true);
             Console.WriteLine($"Bắt đầu trận. Player {firstPlayerId} đi trước.");
         }
 
@@ -44,15 +45,20 @@ namespace ServerMysticArea.Batte
 
             room.CurrentPhase = PhaseType.Draw;
             room.TurnStartTime = DateTime.UtcNow.AddSeconds(TURN_TIME_SECONDS);
-
-            Console.WriteLine( $"Bắt đầu lượt {room.TurnNumber} của Player {state.Session.PlayerData.Nickname}.");
+            string text = $"Lượt {state.Session.PlayerData.Nickname}.";
+            GameSenderBattle.SendAllRoom(room, GameSenderBattle.SendTitlePhase(text));
+            
 
             if (drawCard)
             {
+               
                 var drawnCard = MainServer._zoneManager.DrawCard(state);
-
+                
                 if (drawnCard != null)
                 {
+                    List<CardInstance> cardInstances = new List<CardInstance>();
+                    cardInstances.Add(drawnCard);
+                    GameSenderBattle.SendAllRoom( room,GameSenderBattle.SenDrawCard(cardInstances, state.Session.PlayerId));
                     Console.WriteLine(
                         $"Player {state.Session.PlayerId} rút 1 lá. Deck còn {state.Deck.Count}, Hand có {state.Hand.Count}.");
                 }
@@ -98,11 +104,13 @@ namespace ServerMysticArea.Batte
             }
 
             room.CurrentPhase = nextPhase;
-            Console.WriteLine($"Player {playerId} chuyển phase sang {nextPhase}.");
+            string text = $"{nextPhase} phase của {playerId.Session.PlayerData.Nickname}.";
+            GameSenderBattle.SendAllRoom(room, GameSenderBattle.SendTitlePhase(text));
+           
 
             if (nextPhase == PhaseType.End)
             {
-                EndTurn(room);
+                EndTurn(room,playerId.Session);
             }
 
             return true;
@@ -110,26 +118,33 @@ namespace ServerMysticArea.Batte
 
         
 
-        public void EndTurn(Room room)
+        public void EndTurn(Room room, PlayerSession session)
         {
             if (room == null || room.HostPlayer == null || room.GuestPlayer ==null || room.IsFinished)
                 return;
 
             var state = room.CurrentTurnPlayerId;
-          
+            if (state.Session == session)
+            {
+                Console.WriteLine($"Kết thúc lượt {room.TurnNumber} của Player {state.Session.PlayerId}.");
 
-            Console.WriteLine($"Kết thúc lượt {room.TurnNumber} của Player {state.Session.PlayerId}.");
+                ClearEndTurnTemporaryFlags(state);
 
-            ClearEndTurnTemporaryFlags(state);
+                var opponent = room.GetOpState(state);
+                if (opponent == null)
+                    return;
 
-            var opponent = room.GetOpState(state);
-            if (opponent == null)
-                return;
+                room.CurrentTurnPlayerId = opponent;
+                room.TurnNumber++;
 
-            room.CurrentTurnPlayerId = opponent;
-            room.TurnNumber++;
+                StartTurn(room, drawCard: true);
+            }
+            else
+            {
 
-            StartTurn(room, drawCard: true);
+            }
+
+            
         }
 
      
@@ -197,7 +212,8 @@ namespace ServerMysticArea.Batte
             if (room.CurrentPhase == PhaseType.Draw)
             {
                 room.CurrentPhase = PhaseType.Main;
-                Console.WriteLine( $"Tự động chuyển sang phase {PhaseType.Main}.");
+                string text = $"{room.CurrentPhase}";
+                GameSenderBattle.SendAllRoom(room, GameSenderBattle.SendTitlePhase(text));
             }
         }
 

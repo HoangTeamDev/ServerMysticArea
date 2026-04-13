@@ -43,7 +43,7 @@ namespace ServerMysticArea.RoomAll
         public DateTime TurnStartTime { get;  set; }
         public int TurnDurationSeconds { get;  set; } = 60;
         public int WinnerPlayerId;
-
+        public bool isDrawStartFinishes =false;
         public PlayerState GetState(PlayerSession player)
         {
             if (HostPlayer.Session == player) return HostPlayer;
@@ -64,12 +64,22 @@ namespace ServerMysticArea.RoomAll
         public void Update()
         {
             if (!IsStarted || IsFinished) return;
-           
-
-            if (GetRemainingTurnTime() <= 0)
+            if(HostPlayer.isDrawStart && GuestPlayer.isDrawStart)
             {
-                HandleTurnTimeout();
+                MainServer._battleManager.StartFirstTurn(this);
+                HostPlayer.isDrawStart = false;
+                GuestPlayer.isDrawStart = false;
+                isDrawStartFinishes = true;
             }
+            
+            if (isDrawStartFinishes)
+            {
+                if (GetRemainingTurnTime() <= 0)
+                {
+                    HandleTurnTimeout();
+                }
+            }
+           
         }
         private void HandleTurnTimeout()
         {
@@ -78,7 +88,7 @@ namespace ServerMysticArea.RoomAll
         public void EndTurn(PlayerSession player)
         {
             if (!IsStarted || IsFinished) return;
-            MainServer._turnManager.EndTurn(this);   
+            MainServer._turnManager.EndTurn(this, player);   
             TurnNumber++;
             TurnStartTime = DateTime.UtcNow;
         }
