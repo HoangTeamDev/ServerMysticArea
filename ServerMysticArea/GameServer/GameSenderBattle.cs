@@ -50,12 +50,28 @@ namespace ServerMysticArea.GameServer
             return message;
         }
 
-        public static Message SendTitlePhase(string text)
+        public static Message SendTitlePhase(string text,int turn, int playerid)
         {
             var mess = new Message(15);
             mess.writeByte(1);
+            mess.writeShort((short)turn);
+            mess.writeInt(playerid);
             mess.writeUTF(text);
             return mess;
+        }
+
+        public static Message SendNomalSummon(int playerid, CardInstance cardInstance)
+        {
+            Message message = new Message(14);
+            message.writeByte(3);
+            message.writeInt(playerid);
+            message.writeInt(cardInstance.SlotIndex);
+            message.writeInt((int)cardInstance.InstanceId);
+            message.writeInt(cardInstance.CardId);
+            message.writeInt(cardInstance.CurrentHp);
+            message.writeInt(cardInstance.CurrentAtk);
+            message.writeBool(cardInstance.HasAttackedThisTurn);
+            return message;
         }
       
     }

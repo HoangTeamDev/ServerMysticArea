@@ -62,6 +62,13 @@ namespace ServerMysticArea.GameServer
                         }
                     }
                     break;
+                case 3:
+                    {
+                        int intanceid = message.readInt();
+                        
+                        MainServer._zoneManager.NormalSummon(session, intanceid);
+                    }
+                    break;
             }
         }
     }

@@ -44,9 +44,9 @@ namespace ServerMysticArea.Batte
             ResetTurnFlags(state);
 
             room.CurrentPhase = PhaseType.Draw;
-            room.TurnStartTime = DateTime.UtcNow.AddSeconds(TURN_TIME_SECONDS);
+            room.TurnStartTime = DateTime.UtcNow;
             string text = $"Lượt {state.Session.PlayerData.Nickname}.";
-            GameSenderBattle.SendAllRoom(room, GameSenderBattle.SendTitlePhase(text));
+            GameSenderBattle.SendAllRoom(room, GameSenderBattle.SendTitlePhase(text,room.TurnNumber,state.Session.PlayerId));
             
 
             if (drawCard)
@@ -105,7 +105,7 @@ namespace ServerMysticArea.Batte
 
             room.CurrentPhase = nextPhase;
             string text = $"{nextPhase} phase của {playerId.Session.PlayerData.Nickname}.";
-            GameSenderBattle.SendAllRoom(room, GameSenderBattle.SendTitlePhase(text));
+            GameSenderBattle.SendAllRoom(room, GameSenderBattle.SendTitlePhase(text, room.TurnNumber,state.Session.PlayerId));
            
 
             if (nextPhase == PhaseType.End)
@@ -213,7 +213,7 @@ namespace ServerMysticArea.Batte
             {
                 room.CurrentPhase = PhaseType.Main;
                 string text = $"{room.CurrentPhase}";
-                GameSenderBattle.SendAllRoom(room, GameSenderBattle.SendTitlePhase(text));
+                GameSenderBattle.SendAllRoom(room, GameSenderBattle.SendTitlePhase(text, room.TurnNumber,room.CurrentTurnPlayerId.Session.PlayerId));
             }
         }
 
